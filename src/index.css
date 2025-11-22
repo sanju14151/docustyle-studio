@@ -9,34 +9,54 @@ All colors MUST be HSL.
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 220 13% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 13% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 13% 18%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 189 94% 43%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 13% 95%;
+    --secondary-foreground: 220 13% 18%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 13% 95%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 189 94% 43%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 189 94% 43%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+    
+    /* Custom design tokens */
+    --cement-50: 220 13% 98%;
+    --cement-100: 220 13% 95%;
+    --cement-200: 220 13% 91%;
+    --cement-300: 220 13% 82%;
+    --cement-400: 220 9% 46%;
+    --cement-500: 220 13% 28%;
+    --cement-600: 220 13% 18%;
+    
+    --bright-cyan: 189 94% 43%;
+    --bright-blue: 210 100% 56%;
+    
+    --editor-bg: 220 13% 98%;
+    --preview-bg: 0 0% 100%;
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-large: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,33 +76,45 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 13% 18%;
+    --foreground: 0 0% 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 13% 18%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 13% 18%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 189 94% 43%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 13% 28%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 13% 28%;
+    --muted-foreground: 220 9% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 189 94% 43%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 220 13% 28%;
+    --input: 220 13% 28%;
+    --ring: 189 94% 43%;
+    
+    --cement-50: 220 13% 28%;
+    --cement-100: 220 13% 25%;
+    --cement-200: 220 13% 22%;
+    --cement-300: 220 13% 32%;
+    --cement-400: 220 9% 70%;
+    --cement-500: 220 13% 82%;
+    --cement-600: 220 13% 95%;
+    
+    --editor-bg: 220 13% 15%;
+    --preview-bg: 220 13% 18%;
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -101,5 +133,92 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+  
+  /* Code block styling */
+  .markdown-preview pre {
+    @apply bg-[hsl(var(--cement-100))] border border-[hsl(var(--cement-200))] rounded-lg p-4 overflow-x-auto my-4;
+  }
+  
+  .markdown-preview code {
+    @apply font-mono text-sm;
+  }
+  
+  .markdown-preview pre code {
+    @apply bg-transparent p-0;
+  }
+  
+  .markdown-preview :not(pre) > code {
+    @apply bg-[hsl(var(--cement-100))] text-[hsl(var(--bright-cyan))] px-1.5 py-0.5 rounded text-sm;
+  }
+  
+  /* Table styling */
+  .markdown-preview table {
+    @apply w-full border-collapse my-6 shadow-sm rounded-lg overflow-hidden;
+  }
+  
+  .markdown-preview thead {
+    @apply bg-[hsl(var(--cement-100))];
+  }
+  
+  .markdown-preview th {
+    @apply border border-[hsl(var(--cement-200))] px-4 py-3 text-left font-semibold text-[hsl(var(--foreground))];
+  }
+  
+  .markdown-preview td {
+    @apply border border-[hsl(var(--cement-200))] px-4 py-3;
+  }
+  
+  .markdown-preview tbody tr:nth-child(even) {
+    @apply bg-[hsl(var(--cement-50))];
+  }
+  
+  .markdown-preview tbody tr:hover {
+    @apply bg-[hsl(var(--cement-100))] transition-colors;
+  }
+  
+  /* Heading styling */
+  .markdown-preview h1 {
+    @apply text-4xl font-bold text-[hsl(var(--bright-cyan))] mb-6 mt-8;
+  }
+  
+  .markdown-preview h2 {
+    @apply text-3xl font-bold text-[hsl(var(--bright-blue))] mb-5 mt-7;
+  }
+  
+  .markdown-preview h3 {
+    @apply text-2xl font-semibold text-[hsl(var(--accent))] mb-4 mt-6;
+  }
+  
+  .markdown-preview h4 {
+    @apply text-xl font-semibold text-[hsl(var(--foreground))] mb-3 mt-5;
+  }
+  
+  .markdown-preview h5,
+  .markdown-preview h6 {
+    @apply text-lg font-medium text-[hsl(var(--foreground))] mb-3 mt-4;
+  }
+  
+  .markdown-preview p {
+    @apply mb-4 leading-relaxed;
+  }
+  
+  .markdown-preview ul,
+  .markdown-preview ol {
+    @apply mb-4 ml-6 space-y-2;
+  }
+  
+  .markdown-preview a {
+    @apply text-[hsl(var(--accent))] hover:underline;
+  }
+  
+  .markdown-preview blockquote {
+    @apply border-l-4 border-[hsl(var(--accent))] pl-4 italic my-4 text-[hsl(var(--muted-foreground))];
+  }
+  
+  .markdown-preview hr {
+    @apply border-[hsl(var(--border))] my-8;
   }
 }
