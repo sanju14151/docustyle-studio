@@ -24,6 +24,16 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
     tempContainer.innerHTML = element.innerHTML;
     tempContainer.className = "markdown-preview";
     
+    // Add logo to the top of the PDF
+    const logo = document.createElement("div");
+    logo.style.cssText = "text-align: center; margin-bottom: 20px; padding: 20px 0; border-bottom: 2px solid #e2e8f0;";
+    const logoImg = document.createElement("img");
+    logoImg.src = "/logo.png";
+    logoImg.style.cssText = "height: 60px; width: auto;";
+    logoImg.alt = "TOMO MEOW";
+    logo.appendChild(logoImg);
+    tempContainer.insertBefore(logo, tempContainer.firstChild);
+    
     // Embed all CSS styles directly into the container
     const style = document.createElement("style");
     style.textContent = `

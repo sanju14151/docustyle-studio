@@ -4,7 +4,7 @@ import Preview from "@/components/Preview";
 import ExportButtons from "@/components/ExportButtons";
 import { FileText } from "lucide-react";
 
-const defaultContent = `# Welcome to TOMO UNINY
+const defaultContent = `# Welcome to TOMO MEOW
 
 Transform your markdown and plain text into **beautifully formatted documents**.
 
@@ -80,7 +80,7 @@ const config: DocumentConfig = {
 
 ---
 
-*Built with ❤️ by TOMO UNINY*
+*Built with ❤️ by TOMO MEOW*
 `;
 
 const Index = () => {
@@ -93,11 +93,9 @@ const Index = () => {
       <header className="border-b border-border bg-card shadow-sm">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary rounded-lg">
-              <FileText className="h-6 w-6 text-primary-foreground" />
-            </div>
+            <img src="/logo.png" alt="TOMO MEOW Logo" className="h-12 w-12 rounded-lg" />
             <div>
-              <h1 className="text-xl font-bold text-foreground tracking-wide">TOMO UNINY</h1>
+              <h1 className="text-xl font-bold text-foreground tracking-wide">TOMO MEOW</h1>
               <p className="text-xs text-muted-foreground">
                 Professional Document Formatter
               </p>
