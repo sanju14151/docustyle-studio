@@ -82,7 +82,7 @@ const config: DocumentConfig = {
 
 ---
 
-*Built with ❤️ by TOMO MEOW*
+*Built with ❤️ by AJ STUDIOZ*
 `;
 
 const Index = () => {
@@ -97,12 +97,8 @@ const Index = () => {
       <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transition-transform duration-300 ease-in-out flex flex-col`}>
         {/* Sidebar Header */}
         <div className="p-6 border-b border-border flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/sidebar-logo.png" alt="TOMO MEOW" className="h-10 w-10 rounded-lg" />
-            <div>
-              <h2 className="font-bold text-foreground text-sm">TOMO MEOW</h2>
-              <p className="text-xs text-muted-foreground">Document Studio</p>
-            </div>
+          <div className="flex items-center justify-center w-full">
+            <img src="/sidebar-logo.png" alt="Logo" className="h-20 w-20 object-contain" />
           </div>
           <Button
             variant="ghost"
@@ -139,7 +135,7 @@ const Index = () => {
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-border">
           <p className="text-xs text-muted-foreground text-center">
-            Built with ❤️ by TOMO MEOW
+            Built with ❤️ by AJ STUDIOZ
           </p>
         </div>
       </aside>

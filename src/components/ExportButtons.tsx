@@ -24,7 +24,7 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
 
     const element = previewRef.current.querySelector(".markdown-preview") as HTMLElement;
     
-    if (!element) {
+    if (!element || !element.innerHTML) {
       toast.error("Preview content not found. Please try again.");
       return;
     }
@@ -34,15 +34,22 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
     tempContainer.innerHTML = element.innerHTML;
     tempContainer.className = "markdown-preview";
     
-    // Add logo to the top of the PDF using absolute path
+    // Add logo and brand name to the top of the PDF
     const logo = document.createElement("div");
-    logo.style.cssText = "text-align: center; margin-bottom: 20px; padding: 20px 0; border-bottom: 2px solid #e2e8f0;";
+    logo.style.cssText = "text-align: center; margin-bottom: 20px; padding: 20px 0; border-bottom: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; gap: 15px;";
+    
     const logoImg = document.createElement("img");
     logoImg.src = window.location.origin + "/logo.png";
     logoImg.style.cssText = "height: 60px; width: auto;";
     logoImg.alt = "TOMO MEOW";
     logoImg.crossOrigin = "anonymous";
+    
+    const brandText = document.createElement("h1");
+    brandText.textContent = "TOMO MEOW";
+    brandText.style.cssText = "font-size: 32px; font-weight: bold; color: #0891b2; margin: 0;";
+    
     logo.appendChild(logoImg);
+    logo.appendChild(brandText);
     tempContainer.insertBefore(logo, tempContainer.firstChild);
     
     // Embed all CSS styles directly into the container
