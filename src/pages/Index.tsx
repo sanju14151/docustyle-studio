@@ -4,7 +4,7 @@ import Preview from "@/components/Preview";
 import ExportButtons from "@/components/ExportButtons";
 import { FileText } from "lucide-react";
 
-const defaultContent = `# Welcome to DocuStyle
+const defaultContent = `# Welcome to TOMO UNINY
 
 Transform your markdown and plain text into **beautifully formatted documents**.
 
@@ -12,8 +12,9 @@ Transform your markdown and plain text into **beautifully formatted documents**.
 
 - **Bold, Bright Headings** - Your headings stand out with vibrant colors
 - **Professional Tables** - Clean, structured data presentation
-- **Syntax Highlighted Code** - Beautiful code blocks with proper formatting
-- **Multiple Export Formats** - PDF, Word, and more
+- **Syntax Highlighted Code** - Beautiful code blocks with language labels
+- **Multiple Export Formats** - PDF, Word, and more with perfect formatting
+- **Page Break Prevention** - Code blocks and tables stay together
 
 ## Example Table
 
@@ -23,30 +24,63 @@ Transform your markdown and plain text into **beautifully formatted documents**.
 | Word Export | ✅ Active | High |
 | Markdown Support | ✅ Active | Critical |
 | Code Highlighting | ✅ Active | Medium |
+| Language Labels | ✅ Active | High |
 
-## Code Example
+## Code Example with Language
 
 \`\`\`javascript
 function formatDocument(content) {
   return {
     styled: true,
     beautiful: true,
-    professional: content
+    professional: content,
+    pageBreakSafe: true
   };
 }
+\`\`\`
+
+\`\`\`python
+def process_document(text):
+    """Process and format document content"""
+    return {
+        'formatted': True,
+        'stylish': True,
+        'content': text
+    }
+\`\`\`
+
+\`\`\`typescript
+interface DocumentConfig {
+  title: string;
+  format: 'pdf' | 'docx';
+  styling: {
+    theme: string;
+    colors: string[];
+  };
+}
+
+const config: DocumentConfig = {
+  title: "My Document",
+  format: "pdf",
+  styling: {
+    theme: "modern",
+    colors: ["cyan", "blue"]
+  }
+};
 \`\`\`
 
 ## Getting Started
 
 1. Edit the content in the **left panel**
 2. See your changes **live** in the right panel
-3. Export to your preferred format when ready
+3. Use language tags in code blocks like \`\`\`javascript
+4. Export to your preferred format when ready
 
 > Start creating beautiful documents today!
 
 ---
 
-*Built with ❤️ for content creators*
+*Built with ❤️ by TOMO UNINY*
 `;
 
 const Index = () => {
@@ -63,7 +97,7 @@ const Index = () => {
               <FileText className="h-6 w-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">DocuStyle</h1>
+              <h1 className="text-xl font-bold text-foreground tracking-wide">TOMO UNINY</h1>
               <p className="text-xs text-muted-foreground">
                 Professional Document Formatter
               </p>
