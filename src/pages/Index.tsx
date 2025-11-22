@@ -3,7 +3,8 @@ import Editor from "@/components/Editor";
 import Preview from "@/components/Preview";
 import ExportButtons from "@/components/ExportButtons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText } from "lucide-react";
+import { FileText, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const defaultContent = `# Welcome to TOMO MEOW
 
@@ -87,53 +88,124 @@ const config: DocumentConfig = {
 const Index = () => {
   const [content, setContent] = useState(defaultContent);
   const previewRef = useRef<HTMLDivElement>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="h-screen flex flex-col bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card shadow-sm">
-        <div className="flex items-center justify-between px-6 py-4">
+    <div className="h-screen flex bg-background">
+      {/* Sidebar */}
+      <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transition-transform duration-300 ease-in-out flex flex-col`}>
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="TOMO MEOW Logo" className="h-12 w-12 rounded-lg" />
+            <img src="/sidebar-logo.png" alt="TOMO MEOW" className="h-10 w-10 rounded-lg" />
             <div>
-              <h1 className="text-xl font-bold text-foreground tracking-wide">TOMO MEOW</h1>
-              <p className="text-xs text-muted-foreground">
-                Professional Document Formatter
-              </p>
+              <h2 className="font-bold text-foreground text-sm">TOMO MEOW</h2>
+              <p className="text-xs text-muted-foreground">Document Studio</p>
             </div>
           </div>
-          <div className="hidden md:block">
-            <ExportButtons content={content} previewRef={previewRef} />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </div>
+
+        {/* Sidebar Content */}
+        <div className="flex-1 p-4 space-y-2">
+          <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
+            <h3 className="font-semibold text-sm text-foreground mb-2">Quick Start</h3>
+            <ul className="text-xs text-muted-foreground space-y-1">
+              <li>• Write in markdown</li>
+              <li>• Preview in real-time</li>
+              <li>• Export to PDF/DOCX</li>
+            </ul>
+          </div>
+          
+          <div className="p-3 rounded-lg bg-muted">
+            <h3 className="font-semibold text-sm text-foreground mb-2">Features</h3>
+            <ul className="text-xs text-muted-foreground space-y-1">
+              <li>✨ Syntax highlighting</li>
+              <li>📊 Beautiful tables</li>
+              <li>🎨 Professional styling</li>
+              <li>📱 Mobile responsive</li>
+            </ul>
           </div>
         </div>
-      </header>
 
-      {/* Desktop: Side by side layout */}
-      <div className="hidden lg:flex flex-1 overflow-hidden">
-        <div className="flex-1 border-r border-border overflow-hidden">
-          <Editor value={content} onChange={setContent} />
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-border">
+          <p className="text-xs text-muted-foreground text-center">
+            Built with ❤️ by TOMO MEOW
+          </p>
         </div>
-        <div ref={previewRef} className="flex-1 overflow-hidden">
-          <Preview content={content} />
-        </div>
-      </div>
+      </aside>
 
-      {/* Mobile/Tablet: Tabbed layout */}
-      <div className="lg:hidden flex-1 overflow-hidden">
-        <Tabs defaultValue="editor" className="h-full flex flex-col">
-          <TabsList className="w-full rounded-none border-b">
-            <TabsTrigger value="editor" className="flex-1">Editor</TabsTrigger>
-            <TabsTrigger value="preview" className="flex-1">Preview</TabsTrigger>
-          </TabsList>
-          <TabsContent value="editor" className="flex-1 overflow-hidden m-0">
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="border-b border-border bg-card shadow-sm">
+          <div className="flex items-center justify-between px-6 py-4">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+              <img src="/logo.png" alt="TOMO MEOW Logo" className="h-12 w-12 rounded-lg" />
+              <div>
+                <h1 className="text-xl font-bold text-foreground tracking-wide">TOMO MEOW</h1>
+                <p className="text-xs text-muted-foreground">
+                  Professional Document Formatter
+                </p>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <ExportButtons content={content} previewRef={previewRef} />
+            </div>
+          </div>
+        </header>
+
+        {/* Desktop: Side by side layout */}
+        <div className="hidden lg:flex flex-1 overflow-hidden">
+          <div className="flex-1 border-r border-border overflow-hidden">
             <Editor value={content} onChange={setContent} />
-          </TabsContent>
-          <TabsContent value="preview" className="flex-1 overflow-hidden m-0" ref={previewRef}>
+          </div>
+          <div ref={previewRef} className="flex-1 overflow-hidden">
             <Preview content={content} />
-          </TabsContent>
-        </Tabs>
-        <div className="border-t border-border p-4 bg-card">
-          <ExportButtons content={content} previewRef={previewRef} />
+          </div>
+        </div>
+
+        {/* Mobile/Tablet: Tabbed layout */}
+        <div className="lg:hidden flex-1 overflow-hidden">
+          <Tabs defaultValue="editor" className="h-full flex flex-col">
+            <TabsList className="w-full rounded-none border-b">
+              <TabsTrigger value="editor" className="flex-1">Editor</TabsTrigger>
+              <TabsTrigger value="preview" className="flex-1">Preview</TabsTrigger>
+            </TabsList>
+            <TabsContent value="editor" className="flex-1 overflow-hidden m-0">
+              <Editor value={content} onChange={setContent} />
+            </TabsContent>
+            <TabsContent value="preview" className="flex-1 overflow-hidden m-0" ref={previewRef}>
+              <Preview content={content} />
+            </TabsContent>
+          </Tabs>
+          <div className="border-t border-border p-4 bg-card">
+            <ExportButtons content={content} previewRef={previewRef} />
+          </div>
         </div>
       </div>
     </div>
