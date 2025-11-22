@@ -9,7 +9,7 @@ interface PreviewProps {
 }
 
 const Preview = ({ content }: PreviewProps) => {
-  // Auto-format plain text to look like markdown
+  // Auto-format plain text to look stylish like markdown
   const formatPlainText = (text: string): string => {
     // Check if content already has markdown formatting
     const hasMarkdown = /^#{1,6}\s|^\*\*|^\*|^-\s|^\d+\.\s|^```|^\||^>/.test(text.trim());
@@ -18,39 +18,89 @@ const Preview = ({ content }: PreviewProps) => {
       return text; // Already markdown, return as-is
     }
     
-    // Split into lines and format
-    const lines = text.split('\n');
+    // Split into paragraphs (double line breaks)
+    const paragraphs = text.split(/\n\s*\n/);
     let formatted = '';
     let inCodeBlock = false;
+    let codeLanguage = '';
     
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      const trimmed = line.trim();
+    for (let para of paragraphs) {
+      const lines = para.split('\n');
+      let paraFormatted = '';
+      let isCode = false;
       
-      // Skip empty lines
-      if (!trimmed) {
-        formatted += '\n';
-        continue;
+      // Check if entire paragraph is code
+      const codePatterns = [
+        /^[\s]*(class|interface|function|const|let|var|def|public|private|protected|void|int|String|float|double|boolean)\s/,
+        /^[\s]*[{}\[\]();]/,
+        /^[\s]*import\s|^[\s]*from\s|^[\s]*package\s/,
+        /^[\s]*[a-zA-Z_$][a-zA-Z0-9_$]*\s*[=:({]/,
+        /^[\s]*(if|else|for|while|switch|return|break|continue)\s*[\s(]/,
+        /^[\s]*\/\/|^[\s]*\/\*|^[\s]*\*/,
+        /^[\s]*#include|^[\s]*#define/,
+      ];
+      
+      isCode = lines.some(line => 
+        codePatterns.some(pattern => pattern.test(line)) ||
+        /^[\s]{2,}/.test(line)
+      );
+      
+      // Detect language
+      if (isCode) {
+        if (/\b(class|public|private|void|int|String)\b/.test(para)) {
+          codeLanguage = 'java';
+        } else if (/\b(def|import.*from|self)\b/.test(para)) {
+          codeLanguage = 'python';
+        } else if (/\b(const|let|var|function|=>)\b/.test(para)) {
+          codeLanguage = 'javascript';
+        } else if (/\b(interface|type|namespace)\b/.test(para)) {
+          codeLanguage = 'typescript';
+        } else if (/#include|printf|void main/.test(para)) {
+          codeLanguage = 'c';
+        } else {
+          codeLanguage = 'text';
+        }
       }
       
-      // Detect code-like patterns (indentation, special chars, etc.)
-      const looksLikeCode = /^[\s]*[{}\[\]();]|^[\s]*[a-zA-Z_$][a-zA-Z0-9_$]*\s*[=:({]|^[\s]*(class|function|const|let|var|def|public|private|void|int|String)\s/.test(line);
-      const hasIndent = /^[\s]{2,}/.test(line);
-      
-      if (looksLikeCode || hasIndent) {
+      if (isCode) {
         if (!inCodeBlock) {
-          formatted += '```\n';
+          formatted += '```' + codeLanguage + '\n';
           inCodeBlock = true;
         }
-        formatted += line + '\n';
+        formatted += para + '\n';
       } else {
         if (inCodeBlock) {
           formatted += '```\n\n';
           inCodeBlock = false;
         }
         
-        // Format as paragraph
-        formatted += line + '\n\n';
+        // Format text paragraphs
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          
+          if (!line) continue;
+          
+          // Check if line looks like a title/heading (short, no punctuation at end, or ends with :)
+          if (line.length < 60 && (!/[.!?]$/.test(line) || /[:]\s*$/.test(line))) {
+            // Make it a heading
+            if (line.length < 30 && i === 0) {
+              paraFormatted += `## ${line}\n\n`;
+            } else {
+              paraFormatted += `### ${line}\n\n`;
+            }
+          } else if (/^\d+[\.)]\s/.test(line)) {
+            // Numbered list
+            paraFormatted += line + '\n';
+          } else if (/^[-*•]\s/.test(line)) {
+            // Bullet list
+            paraFormatted += line.replace(/^[-*•]\s/, '- ') + '\n';
+          } else {
+            // Regular paragraph
+            paraFormatted += line + '\n\n';
+          }
+        }
+        
+        formatted += paraFormatted;
       }
     }
     
