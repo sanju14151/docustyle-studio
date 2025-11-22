@@ -9,6 +9,59 @@ interface PreviewProps {
 }
 
 const Preview = ({ content }: PreviewProps) => {
+  // Auto-format plain text to look like markdown
+  const formatPlainText = (text: string): string => {
+    // Check if content already has markdown formatting
+    const hasMarkdown = /^#{1,6}\s|^\*\*|^\*|^-\s|^\d+\.\s|^```|^\||^>/.test(text.trim());
+    
+    if (hasMarkdown) {
+      return text; // Already markdown, return as-is
+    }
+    
+    // Split into lines and format
+    const lines = text.split('\n');
+    let formatted = '';
+    let inCodeBlock = false;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+      
+      // Skip empty lines
+      if (!trimmed) {
+        formatted += '\n';
+        continue;
+      }
+      
+      // Detect code-like patterns (indentation, special chars, etc.)
+      const looksLikeCode = /^[\s]*[{}\[\]();]|^[\s]*[a-zA-Z_$][a-zA-Z0-9_$]*\s*[=:({]|^[\s]*(class|function|const|let|var|def|public|private|void|int|String)\s/.test(line);
+      const hasIndent = /^[\s]{2,}/.test(line);
+      
+      if (looksLikeCode || hasIndent) {
+        if (!inCodeBlock) {
+          formatted += '```\n';
+          inCodeBlock = true;
+        }
+        formatted += line + '\n';
+      } else {
+        if (inCodeBlock) {
+          formatted += '```\n\n';
+          inCodeBlock = false;
+        }
+        
+        // Format as paragraph
+        formatted += line + '\n\n';
+      }
+    }
+    
+    // Close code block if still open
+    if (inCodeBlock) {
+      formatted += '```\n';
+    }
+    
+    return formatted;
+  };
+  
   // Custom components to add language labels to code blocks
   const components: Components = {
     code: ({ node, className, children, ...props }: any) => {
@@ -59,7 +112,7 @@ const Preview = ({ content }: PreviewProps) => {
               rehypePlugins={[rehypeHighlight]}
               components={components}
             >
-              {content}
+              {formatPlainText(content)}
             </ReactMarkdown>
           ) : (
             <div className="text-center text-muted-foreground py-20">
