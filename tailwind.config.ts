@@ -57,6 +57,22 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        cement: {
+          50: "hsl(var(--cement-50))",
+          100: "hsl(var(--cement-100))",
+          200: "hsl(var(--cement-200))",
+          300: "hsl(var(--cement-300))",
+          400: "hsl(var(--cement-400))",
+          500: "hsl(var(--cement-500))",
+          600: "hsl(var(--cement-600))",
+        },
+        bright: {
+          cyan: "hsl(var(--bright-cyan))",
+          blue: "hsl(var(--bright-blue))",
+        },
+      },
+      fontFamily: {
+        sans: ['Outfit', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
