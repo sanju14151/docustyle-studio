@@ -18,16 +18,63 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
     }
 
     const element = previewRef.current.querySelector(".markdown-preview") as HTMLElement;
+    
+    // Create a temporary container with PDF-specific styles
+    const tempContainer = document.createElement("div");
+    tempContainer.innerHTML = element.innerHTML;
+    tempContainer.style.cssText = `
+      font-family: 'Outfit', sans-serif;
+      color: #1a1a1a;
+      line-height: 1.6;
+    `;
+    
+    // Add styles to prevent page breaks within elements
+    const style = document.createElement("style");
+    style.textContent = `
+      pre, table, h1, h2, h3, h4, h5, h6 {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      .code-block-wrapper {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    `;
+    tempContainer.appendChild(style);
+    document.body.appendChild(tempContainer);
+
     const opt = {
-      margin: 1,
+      margin: [0.75, 0.75, 0.75, 0.75] as [number, number, number, number],
       filename: "document.pdf",
       image: { type: "jpeg" as const, quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" as const },
+      html2canvas: { 
+        scale: 2, 
+        useCORS: true,
+        logging: false,
+        letterRendering: true
+      },
+      jsPDF: { 
+        unit: "in", 
+        format: "letter", 
+        orientation: "portrait" as const,
+        compress: true
+      },
+      pagebreak: { 
+        mode: ['avoid-all', 'css', 'legacy'] as any,
+        before: '.page-break-before',
+        after: '.page-break-after',
+        avoid: ['pre', 'table', 'h1', 'h2', 'h3', '.code-block-wrapper']
+      }
     };
 
     toast.promise(
-      html2pdf().set(opt).from(element).save(),
+      html2pdf().set(opt).from(tempContainer).save().then(() => {
+        document.body.removeChild(tempContainer);
+      }),
       {
         loading: "Generating PDF...",
         success: "PDF downloaded successfully!",
