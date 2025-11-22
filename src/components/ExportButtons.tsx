@@ -483,26 +483,28 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 w-full">
       <Button
         onClick={exportToPDF}
         variant="default"
         size="sm"
-        className="gap-2"
+        className="gap-2 flex-1 sm:flex-none"
         disabled={!content}
       >
         <Download className="h-4 w-4" />
-        Export PDF
+        <span className="hidden sm:inline">Export PDF</span>
+        <span className="sm:hidden">PDF</span>
       </Button>
       <Button
         onClick={exportToDOCX}
         variant="secondary"
         size="sm"
-        className="gap-2"
+        className="gap-2 flex-1 sm:flex-none"
         disabled={!content}
       >
         <FileText className="h-4 w-4" />
-        Export DOCX
+        <span className="hidden sm:inline">Export DOCX</span>
+        <span className="sm:hidden">DOCX</span>
       </Button>
     </div>
   );

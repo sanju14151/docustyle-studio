@@ -151,21 +151,21 @@ const Index = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="border-b border-border bg-card shadow-sm">
-          <div className="flex items-center justify-between px-6 py-4">
-            <div className="flex items-center gap-3">
+        <header className="border-b border-border bg-card shadow-sm flex-shrink-0">
+          <div className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden"
+                className="lg:hidden h-8 w-8"
                 onClick={() => setSidebarOpen(true)}
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-4 w-4" />
               </Button>
-              <img src="/logo.png" alt="TOMO MEOW Logo" className="h-12 w-12 rounded-lg" />
+              <img src="/logo.png" alt="TOMO MEOW Logo" className="h-8 w-8 sm:h-12 sm:w-12 rounded-lg" />
               <div>
-                <h1 className="text-xl font-bold text-foreground tracking-wide">TOMO MEOW</h1>
-                <p className="text-xs text-muted-foreground">
+                <h1 className="text-sm sm:text-xl font-bold text-foreground tracking-wide">TOMO MEOW</h1>
+                <p className="text-xs text-muted-foreground hidden sm:block">
                   Professional Document Formatter
                 </p>
               </div>
@@ -187,22 +187,22 @@ const Index = () => {
         </div>
 
         {/* Mobile/Tablet: Tabbed layout */}
-        <div className="lg:hidden flex-1 overflow-hidden">
-          <Tabs defaultValue="editor" className="h-full flex flex-col">
-            <TabsList className="w-full rounded-none border-b">
-              <TabsTrigger value="editor" className="flex-1">Editor</TabsTrigger>
-              <TabsTrigger value="preview" className="flex-1">Preview</TabsTrigger>
-            </TabsList>
-            <TabsContent value="editor" className="flex-1 overflow-hidden m-0">
+        <div className="lg:hidden flex-1 flex flex-col overflow-hidden">
+          <Tabs defaultValue="editor" className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-shrink-0">
+              <TabsList className="w-full rounded-none border-b">
+                <TabsTrigger value="editor" className="flex-1">Editor</TabsTrigger>
+                <TabsTrigger value="preview" className="flex-1">Preview</TabsTrigger>
+              </TabsList>
+            </div>
+            <TabsContent value="editor" className="flex-1 overflow-auto m-0 data-[state=active]:flex data-[state=active]:flex-col">
               <Editor value={content} onChange={setContent} />
             </TabsContent>
-            <TabsContent value="preview" className="flex-1 overflow-hidden m-0">
-              <div ref={mobilePreviewRef}>
-                <Preview content={content} />
-              </div>
+            <TabsContent value="preview" className="flex-1 overflow-auto m-0 data-[state=active]:flex data-[state=active]:flex-col" ref={mobilePreviewRef}>
+              <Preview content={content} />
             </TabsContent>
           </Tabs>
-          <div className="border-t border-border p-4 bg-card">
+          <div className="flex-shrink-0 border-t border-border p-3 bg-card">
             <ExportButtons 
               content={content} 
               previewRef={typeof window !== 'undefined' && window.innerWidth >= 1024 ? previewRef : mobilePreviewRef} 
