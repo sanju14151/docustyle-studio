@@ -225,7 +225,7 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
 
     const opt = {
       margin: [0.75, 0.75, 0.75, 0.75] as [number, number, number, number],
-      filename: "document.pdf",
+      filename: "meow.pdf",
       image: { type: "jpeg" as const, quality: 0.98 },
       html2canvas: { 
         scale: 2.5, 
@@ -409,7 +409,7 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       });
 
       const blob = await Packer.toBlob(doc);
-      saveAs(blob, "document.docx");
+      saveAs(blob, "meow.docx");
       toast.success("Word document downloaded successfully!");
     } catch (error) {
       toast.error("Failed to generate Word document");

@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import Editor from "@/components/Editor";
 import Preview from "@/components/Preview";
 import ExportButtons from "@/components/ExportButtons";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText } from "lucide-react";
 
 const defaultContent = `# Welcome to TOMO MEOW
@@ -101,17 +102,38 @@ const Index = () => {
               </p>
             </div>
           </div>
-          <ExportButtons content={content} previewRef={previewRef} />
+          <div className="hidden md:block">
+            <ExportButtons content={content} previewRef={previewRef} />
+          </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
-        <div className="border-r border-border overflow-hidden">
+      {/* Desktop: Side by side layout */}
+      <div className="hidden lg:flex flex-1 overflow-hidden">
+        <div className="flex-1 border-r border-border overflow-hidden">
           <Editor value={content} onChange={setContent} />
         </div>
-        <div ref={previewRef} className="overflow-hidden">
+        <div ref={previewRef} className="flex-1 overflow-hidden">
           <Preview content={content} />
+        </div>
+      </div>
+
+      {/* Mobile/Tablet: Tabbed layout */}
+      <div className="lg:hidden flex-1 overflow-hidden">
+        <Tabs defaultValue="editor" className="h-full flex flex-col">
+          <TabsList className="w-full rounded-none border-b">
+            <TabsTrigger value="editor" className="flex-1">Editor</TabsTrigger>
+            <TabsTrigger value="preview" className="flex-1">Preview</TabsTrigger>
+          </TabsList>
+          <TabsContent value="editor" className="flex-1 overflow-hidden m-0">
+            <Editor value={content} onChange={setContent} />
+          </TabsContent>
+          <TabsContent value="preview" className="flex-1 overflow-hidden m-0" ref={previewRef}>
+            <Preview content={content} />
+          </TabsContent>
+        </Tabs>
+        <div className="border-t border-border p-4 bg-card">
+          <ExportButtons content={content} previewRef={previewRef} />
         </div>
       </div>
     </div>
