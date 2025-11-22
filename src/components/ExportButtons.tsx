@@ -19,29 +19,195 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
 
     const element = previewRef.current.querySelector(".markdown-preview") as HTMLElement;
     
-    // Create a temporary container with PDF-specific styles
+    // Create a temporary container with all styles embedded
     const tempContainer = document.createElement("div");
     tempContainer.innerHTML = element.innerHTML;
-    tempContainer.style.cssText = `
-      font-family: 'Outfit', sans-serif;
-      color: #1a1a1a;
-      line-height: 1.6;
-    `;
+    tempContainer.className = "markdown-preview";
     
-    // Add styles to prevent page breaks within elements
+    // Embed all CSS styles directly into the container
     const style = document.createElement("style");
     style.textContent = `
-      pre, table, h1, h2, h3, h4, h5, h6 {
+      * {
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #2d3748;
+        line-height: 1.6;
+      }
+      
+      /* Code block styling */
+      .code-block-wrapper {
+        background: #f7fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        margin: 24px 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         page-break-inside: avoid !important;
         break-inside: avoid !important;
       }
-      h1, h2, h3, h4, h5, h6 {
+      
+      .code-block-header {
+        background: #e2e8f0;
+        padding: 8px 16px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #4a5568;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid #cbd5e0;
+      }
+      
+      .code-block-content {
+        padding: 16px;
+        overflow-x: auto;
+      }
+      
+      pre {
+        margin: 0;
+        background: transparent !important;
+        border: none !important;
+      }
+      
+      code {
+        font-family: 'Courier New', monospace;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      
+      pre code {
+        background: transparent !important;
+        padding: 0 !important;
+      }
+      
+      :not(pre) > code {
+        background: #f7fafc;
+        color: #0891b2;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      
+      /* Table styling */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      
+      thead {
+        background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%);
+      }
+      
+      th {
+        border: 1px solid #e2e8f0;
+        padding: 14px 20px;
+        text-align: left;
+        font-weight: 700;
+        color: #2d3748;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      
+      td {
+        border: 1px solid #e2e8f0;
+        padding: 14px 20px;
+        color: #4a5568;
+      }
+      
+      tbody tr:nth-child(even) {
+        background: #f7fafc;
+      }
+      
+      /* Heading styling */
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0891b2;
+        margin-bottom: 24px;
+        margin-top: 32px;
         page-break-after: avoid !important;
         break-after: avoid !important;
       }
-      .code-block-wrapper {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
+      
+      h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #3b82f6;
+        margin-bottom: 20px;
+        margin-top: 28px;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      
+      h3 {
+        font-size: 22px;
+        font-weight: 600;
+        color: #0891b2;
+        margin-bottom: 16px;
+        margin-top: 24px;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      
+      h4, h5, h6 {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 12px;
+        margin-top: 20px;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      
+      p {
+        margin-bottom: 16px;
+        color: #4a5568;
+      }
+      
+      ul, ol {
+        margin-bottom: 16px;
+        margin-left: 24px;
+        color: #4a5568;
+      }
+      
+      li {
+        margin-bottom: 8px;
+      }
+      
+      a {
+        color: #0891b2;
+        text-decoration: underline;
+      }
+      
+      blockquote {
+        border-left: 4px solid #0891b2;
+        padding-left: 16px;
+        font-style: italic;
+        margin: 16px 0;
+        color: #718096;
+      }
+      
+      hr {
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        margin: 32px 0;
+      }
+      
+      strong {
+        font-weight: 700;
+      }
+      
+      em {
+        font-style: italic;
       }
     `;
     tempContainer.appendChild(style);
@@ -52,10 +218,11 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       filename: "document.pdf",
       image: { type: "jpeg" as const, quality: 0.98 },
       html2canvas: { 
-        scale: 2, 
+        scale: 2.5, 
         useCORS: true,
         logging: false,
-        letterRendering: true
+        letterRendering: true,
+        allowTaint: true
       },
       jsPDF: { 
         unit: "in", 
@@ -76,7 +243,7 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
         document.body.removeChild(tempContainer);
       }),
       {
-        loading: "Generating PDF...",
+        loading: "Generating PDF with exact styling...",
         success: "PDF downloaded successfully!",
         error: "Failed to generate PDF",
       }
