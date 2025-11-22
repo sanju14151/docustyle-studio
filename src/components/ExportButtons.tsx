@@ -12,12 +12,22 @@ interface ExportButtonsProps {
 
 const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
   const exportToPDF = () => {
-    if (!previewRef.current || !content) {
+    if (!content) {
       toast.error("Please add some content before exporting");
       return;
     }
 
+    if (!previewRef.current) {
+      toast.error("Preview not ready. Please try again.");
+      return;
+    }
+
     const element = previewRef.current.querySelector(".markdown-preview") as HTMLElement;
+    
+    if (!element) {
+      toast.error("Preview content not found. Please try again.");
+      return;
+    }
     
     // Create a temporary container with all styles embedded
     const tempContainer = document.createElement("div");

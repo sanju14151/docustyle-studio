@@ -88,6 +88,7 @@ const config: DocumentConfig = {
 const Index = () => {
   const [content, setContent] = useState(defaultContent);
   const previewRef = useRef<HTMLDivElement>(null);
+  const mobilePreviewRef = useRef<HTMLDivElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -199,12 +200,17 @@ const Index = () => {
             <TabsContent value="editor" className="flex-1 overflow-hidden m-0">
               <Editor value={content} onChange={setContent} />
             </TabsContent>
-            <TabsContent value="preview" className="flex-1 overflow-hidden m-0" ref={previewRef}>
-              <Preview content={content} />
+            <TabsContent value="preview" className="flex-1 overflow-hidden m-0">
+              <div ref={mobilePreviewRef}>
+                <Preview content={content} />
+              </div>
             </TabsContent>
           </Tabs>
           <div className="border-t border-border p-4 bg-card">
-            <ExportButtons content={content} previewRef={previewRef} />
+            <ExportButtons 
+              content={content} 
+              previewRef={typeof window !== 'undefined' && window.innerWidth >= 1024 ? previewRef : mobilePreviewRef} 
+            />
           </div>
         </div>
       </div>
