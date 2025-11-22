@@ -29,24 +29,28 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       return;
     }
     
+    // Clone the element to avoid modifying the original
+    const clonedElement = element.cloneNode(true) as HTMLElement;
+    
     // Create a temporary container with all styles embedded
     const tempContainer = document.createElement("div");
-    tempContainer.innerHTML = element.innerHTML;
+    tempContainer.innerHTML = clonedElement.innerHTML;
     tempContainer.className = "markdown-preview";
+    tempContainer.style.cssText = "width: 100%; max-width: 800px; margin: 0 auto;";
     
     // Add logo and brand name to the top of the PDF
     const logo = document.createElement("div");
-    logo.style.cssText = "text-align: center; margin-bottom: 20px; padding: 20px 0; border-bottom: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; gap: 15px;";
+    logo.style.cssText = "text-align: center; margin-bottom: 20px; padding: 20px 0; border-bottom: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; gap: 15px; page-break-after: avoid !important;";
     
     const logoImg = document.createElement("img");
     logoImg.src = window.location.origin + "/logo.png";
-    logoImg.style.cssText = "height: 60px; width: auto;";
+    logoImg.style.cssText = "height: 50px; width: auto;";
     logoImg.alt = "TOMO MEOW";
     logoImg.crossOrigin = "anonymous";
     
     const brandText = document.createElement("h1");
     brandText.textContent = "TOMO MEOW";
-    brandText.style.cssText = "font-size: 32px; font-weight: bold; color: #0891b2; margin: 0;";
+    brandText.style.cssText = "font-size: 28px; font-weight: bold; color: #0891b2; margin: 0;";
     
     logo.appendChild(logoImg);
     logo.appendChild(brandText);
@@ -69,18 +73,20 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       .code-block-wrapper {
         background: #f7fafc;
         border: 1px solid #e2e8f0;
-        border-radius: 12px;
+        border-radius: 8px;
         overflow: hidden;
-        margin: 24px 0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+        page-break-before: auto !important;
+        page-break-after: auto !important;
       }
       
       .code-block-header {
         background: #e2e8f0;
-        padding: 8px 16px;
-        font-size: 11px;
+        padding: 6px 12px;
+        font-size: 10px;
         font-weight: 600;
         color: #4a5568;
         text-transform: uppercase;
@@ -89,7 +95,7 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       }
       
       .code-block-content {
-        padding: 16px;
+        padding: 12px;
         overflow-x: auto;
       }
       
@@ -123,9 +129,9 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       table {
         width: 100%;
         border-collapse: collapse;
-        margin: 24px 0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
+        margin: 20px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
         overflow: hidden;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
@@ -137,19 +143,20 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       
       th {
         border: 1px solid #e2e8f0;
-        padding: 14px 20px;
+        padding: 10px 14px;
         text-align: left;
         font-weight: 700;
         color: #2d3748;
-        font-size: 12px;
+        font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
       
       td {
         border: 1px solid #e2e8f0;
-        padding: 14px 20px;
+        padding: 10px 14px;
         color: #4a5568;
+        font-size: 13px;
       }
       
       tbody tr:nth-child(even) {
@@ -158,57 +165,63 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       
       /* Heading styling */
       h1 {
-        font-size: 32px;
-        font-weight: 700;
-        color: #0891b2;
-        margin-bottom: 24px;
-        margin-top: 32px;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-      }
-      
-      h2 {
         font-size: 28px;
         font-weight: 700;
-        color: #3b82f6;
-        margin-bottom: 20px;
-        margin-top: 28px;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-      }
-      
-      h3 {
-        font-size: 22px;
-        font-weight: 600;
         color: #0891b2;
         margin-bottom: 16px;
         margin-top: 24px;
         page-break-after: avoid !important;
         break-after: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      
+      h2 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #3b82f6;
+        margin-bottom: 14px;
+        margin-top: 20px;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      
+      h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0891b2;
+        margin-bottom: 12px;
+        margin-top: 18px;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        page-break-inside: avoid !important;
       }
       
       h4, h5, h6 {
         font-weight: 600;
         color: #2d3748;
-        margin-bottom: 12px;
-        margin-top: 20px;
+        margin-bottom: 10px;
+        margin-top: 16px;
         page-break-after: avoid !important;
         break-after: avoid !important;
+        page-break-inside: avoid !important;
       }
       
       p {
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         color: #4a5568;
+        line-height: 1.5;
       }
       
       ul, ol {
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         margin-left: 24px;
         color: #4a5568;
       }
       
       li {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+        line-height: 1.5;
       }
       
       a {
@@ -242,15 +255,17 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
     document.body.appendChild(tempContainer);
 
     const opt = {
-      margin: [0.75, 0.75, 0.75, 0.75] as [number, number, number, number],
+      margin: [0.5, 0.5, 0.5, 0.5] as [number, number, number, number],
       filename: "meow.pdf",
-      image: { type: "jpeg" as const, quality: 0.98 },
+      image: { type: "jpeg" as const, quality: 0.95 },
       html2canvas: { 
-        scale: 2.5, 
+        scale: 2, 
         useCORS: true,
         logging: false,
         letterRendering: true,
-        allowTaint: true
+        allowTaint: true,
+        windowWidth: 800,
+        windowHeight: document.body.scrollHeight
       },
       jsPDF: { 
         unit: "in", 
@@ -262,16 +277,33 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
         mode: ['avoid-all', 'css', 'legacy'] as any,
         before: '.page-break-before',
         after: '.page-break-after',
-        avoid: ['pre', 'table', 'h1', 'h2', 'h3', '.code-block-wrapper']
+        avoid: ['pre', 'table', 'h1', 'h2', 'h3', 'h4', '.code-block-wrapper', 'tr', 'li']
       }
     };
+
+    // Prevent page zoom during PDF generation
+    const originalOverflow = document.body.style.overflow;
+    const originalPosition = document.body.style.position;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
 
     toast.promise(
       html2pdf().set(opt).from(tempContainer).save().then(() => {
         document.body.removeChild(tempContainer);
+        // Restore original styles
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.width = '';
+      }).catch((error) => {
+        document.body.removeChild(tempContainer);
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.width = '';
+        throw error;
       }),
       {
-        loading: "Generating PDF with exact styling...",
+        loading: "Generating PDF...",
         success: "PDF downloaded successfully!",
         error: "Failed to generate PDF",
       }
