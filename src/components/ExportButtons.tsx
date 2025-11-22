@@ -38,23 +38,27 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
     tempContainer.className = "markdown-preview";
     tempContainer.style.cssText = "width: 100%; max-width: 800px; margin: 0 auto;";
     
-    // Add logo and brand name to the top of the PDF
-    const logo = document.createElement("div");
-    logo.style.cssText = "text-align: center; margin-bottom: 20px; padding: 20px 0; border-bottom: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; gap: 15px; page-break-after: avoid !important;";
+    // Add logo and brand name to the top of the PDF (perplexity-style header)
+    const header = document.createElement("div");
+    header.style.cssText = "text-align: center; margin-bottom: 30px; padding: 30px 0 20px 0; page-break-after: avoid !important;";
+    
+    const logoContainer = document.createElement("div");
+    logoContainer.style.cssText = "display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 10px;";
     
     const logoImg = document.createElement("img");
     logoImg.src = window.location.origin + "/logo.png";
-    logoImg.style.cssText = "height: 50px; width: auto;";
+    logoImg.style.cssText = "height: 45px; width: auto;";
     logoImg.alt = "TOMO MEOW";
     logoImg.crossOrigin = "anonymous";
     
-    const brandText = document.createElement("h1");
+    const brandText = document.createElement("span");
     brandText.textContent = "TOMO MEOW";
-    brandText.style.cssText = "font-size: 28px; font-weight: bold; color: #0891b2; margin: 0;";
+    brandText.style.cssText = "font-size: 26px; font-weight: 600; color: #1a202c; letter-spacing: -0.5px;";
     
-    logo.appendChild(logoImg);
-    logo.appendChild(brandText);
-    tempContainer.insertBefore(logo, tempContainer.firstChild);
+    logoContainer.appendChild(logoImg);
+    logoContainer.appendChild(brandText);
+    header.appendChild(logoContainer);
+    tempContainer.insertBefore(header, tempContainer.firstChild);
     
     // Embed all CSS styles directly into the container
     const style = document.createElement("style");
@@ -64,19 +68,19 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       }
       
       body {
-        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        color: #2d3748;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        color: #212529;
         line-height: 1.6;
+        background: #ffffff;
       }
       
-      /* Code block styling */
+      /* Code block styling - Perplexity style */
       .code-block-wrapper {
-        background: #f7fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
         overflow: hidden;
-        margin: 20px 0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 18px 0;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
         page-break-before: auto !important;
@@ -84,19 +88,21 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       }
       
       .code-block-header {
-        background: #e2e8f0;
-        padding: 6px 12px;
-        font-size: 10px;
+        background: #ffffff;
+        padding: 8px 14px;
+        font-size: 11px;
         font-weight: 600;
-        color: #4a5568;
+        color: #495057;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        border-bottom: 1px solid #cbd5e0;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #e9ecef;
+        font-family: 'Courier New', monospace;
       }
       
       .code-block-content {
-        padding: 12px;
+        padding: 14px 16px;
         overflow-x: auto;
+        background: #f8f9fa;
       }
       
       pre {
@@ -106,9 +112,10 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       }
       
       code {
-        font-family: 'Courier New', monospace;
+        font-family: 'Courier New', 'Consolas', monospace;
         font-size: 13px;
         line-height: 1.6;
+        color: #212529;
       }
       
       pre code {
@@ -117,12 +124,12 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       }
       
       :not(pre) > code {
-        background: #f7fafc;
-        color: #0891b2;
-        padding: 2px 8px;
-        border-radius: 6px;
+        background: #e9ecef;
+        color: #d63384;
+        padding: 2px 6px;
+        border-radius: 4px;
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 500;
       }
       
       /* Table styling */
@@ -163,35 +170,36 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
         background: #f7fafc;
       }
       
-      /* Heading styling */
+      /* Heading styling - Perplexity style */
       h1 {
-        font-size: 28px;
+        font-size: 26px;
         font-weight: 700;
-        color: #0891b2;
-        margin-bottom: 16px;
-        margin-top: 24px;
+        color: #212529;
+        margin-bottom: 14px;
+        margin-top: 0;
+        padding-top: 8px;
         page-break-after: avoid !important;
         break-after: avoid !important;
         page-break-inside: avoid !important;
       }
       
       h2 {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 700;
-        color: #3b82f6;
-        margin-bottom: 14px;
-        margin-top: 20px;
+        color: #212529;
+        margin-bottom: 12px;
+        margin-top: 24px;
         page-break-after: avoid !important;
         break-after: avoid !important;
         page-break-inside: avoid !important;
       }
       
       h3 {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 600;
-        color: #0891b2;
-        margin-bottom: 12px;
-        margin-top: 18px;
+        color: #212529;
+        margin-bottom: 10px;
+        margin-top: 20px;
         page-break-after: avoid !important;
         break-after: avoid !important;
         page-break-inside: avoid !important;
@@ -199,7 +207,7 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       
       h4, h5, h6 {
         font-weight: 600;
-        color: #2d3748;
+        color: #495057;
         margin-bottom: 10px;
         margin-top: 16px;
         page-break-after: avoid !important;
@@ -208,43 +216,50 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       }
       
       p {
-        margin-bottom: 12px;
-        color: #4a5568;
-        line-height: 1.5;
+        margin-bottom: 14px;
+        color: #495057;
+        line-height: 1.6;
+        font-size: 14px;
       }
       
       ul, ol {
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         margin-left: 24px;
-        color: #4a5568;
+        color: #495057;
       }
       
       li {
         margin-bottom: 6px;
-        line-height: 1.5;
+        line-height: 1.6;
+        font-size: 14px;
       }
       
       a {
-        color: #0891b2;
+        color: #0d6efd;
+        text-decoration: none;
+      }
+      
+      a:hover {
         text-decoration: underline;
       }
       
       blockquote {
-        border-left: 4px solid #0891b2;
+        border-left: 3px solid #dee2e6;
         padding-left: 16px;
         font-style: italic;
         margin: 16px 0;
-        color: #718096;
+        color: #6c757d;
       }
       
       hr {
         border: none;
-        border-top: 1px solid #e2e8f0;
-        margin: 32px 0;
+        border-top: 1px solid #dee2e6;
+        margin: 24px 0;
       }
       
       strong {
         font-weight: 700;
+        color: #212529;
       }
       
       em {
