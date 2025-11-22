@@ -220,7 +220,12 @@ All colors MUST be HSL.
   }
   
   .markdown-preview p {
-    @apply mb-4 leading-relaxed;
+    @apply mb-4 leading-relaxed text-[hsl(var(--foreground))];
+  }
+  
+  /* Plain text formatting */
+  .markdown-preview {
+    @apply text-[hsl(var(--foreground))] text-base;
   }
   
   .markdown-preview ul,
@@ -228,15 +233,24 @@ All colors MUST be HSL.
     @apply mb-4 ml-6 space-y-2;
   }
   
+  .markdown-preview li {
+    @apply leading-relaxed;
+  }
+  
   .markdown-preview a {
-    @apply text-[hsl(var(--accent))] hover:underline;
+    @apply text-[hsl(var(--accent))] hover:underline transition-colors;
   }
   
   .markdown-preview blockquote {
-    @apply border-l-4 border-[hsl(var(--accent))] pl-4 italic my-4 text-[hsl(var(--muted-foreground))];
+    @apply border-l-4 border-[hsl(var(--accent))] pl-4 italic my-4 text-[hsl(var(--muted-foreground))] bg-[hsl(var(--cement-50))] py-3 rounded-r;
   }
   
   .markdown-preview hr {
     @apply border-[hsl(var(--border))] my-8;
+  }
+  
+  /* Ensure plain text is formatted nicely */
+  .markdown-preview > * {
+    @apply text-[hsl(var(--foreground))];
   }
 }

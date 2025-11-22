@@ -38,6 +38,9 @@ const Preview = ({ content }: PreviewProps) => {
     pre: ({ children }: any) => {
       return <pre>{children}</pre>;
     },
+    p: ({ children }: any) => {
+      return <p className="leading-relaxed">{children}</p>;
+    },
   };
 
   return (
@@ -61,7 +64,7 @@ const Preview = ({ content }: PreviewProps) => {
           ) : (
             <div className="text-center text-muted-foreground py-20">
               <p className="text-lg">Your formatted content will appear here</p>
-              <p className="text-sm mt-2">Start typing in the editor to see the preview</p>
+              <p className="text-sm mt-2">Start typing or paste any text to see it formatted</p>
             </div>
           )}
         </div>
