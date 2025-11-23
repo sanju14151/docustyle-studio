@@ -1,9 +1,12 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import Editor from "@/components/Editor";
 import Preview from "@/components/Preview";
 import ExportButtons from "@/components/ExportButtons";
+import { TextInput } from "@/components/TextInput";
+import { FormattedPreview } from "@/components/FormattedPreview";
+import { parseText } from "@/lib/textParser";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Menu, X } from "lucide-react";
+import { FileText, Menu, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const defaultContent = `# Welcome to TOMO MEOW
@@ -85,11 +88,65 @@ const config: DocumentConfig = {
 *Built with ❤️ by AJ STUDIOZ*
 `;
 
+const defaultPlainText = `UNIT – 5: FILE HANDLING & I/O STREAMS
+
+1. Java I/O Streams – Concepts & Types (10 Marks)
+
+10-MARK ANSWER
+
+Java I/O (Input/Output) streams are mechanisms used to read data from sources and write data to destinations like files, networks, keyboards, etc.
+
+Java treats every input/output operation as a stream of data.
+
+Types of Streams
+
+1. Byte Streams
+Used to read/write binary data.
+Classes:
+- FileInputStream
+- FileOutputStream
+
+2. Character Streams
+Used to read/write character data.
+Classes:
+- FileReader
+- FileWriter
+
+PROGRAM (Simple Read & Write using FileInputStream/FileOutputStream)
+
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Write to File
+        FileOutputStream fout = new FileOutputStream("test.txt");
+        fout.write("Hello SJ!".getBytes());
+        fout.close();
+
+        // Read from File
+        FileInputStream fin = new FileInputStream("test.txt");
+        int i;
+        while((i = fin.read()) != -1) {
+            System.out.print((char)i);
+        }
+        fin.close();
+    }
+}`;
+
 const Index = () => {
   const [content, setContent] = useState(defaultContent);
-  const previewRef = useRef<HTMLDivElement>(null);
+  const [plainText, setPlainText] = useState(defaultPlainText);
+  const [mode, setMode] = useState<'markdown' | 'plain'>('plain');
+  const markdownPreviewRef = useRef<HTMLDivElement>(null);
+  const plainPreviewRef = useRef<HTMLDivElement>(null);
   const mobilePreviewRef = useRef<HTMLDivElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const parsedContent = useMemo(() => {
+    return parseText(plainText);
+  }, [plainText]);
+
+  const currentPreviewRef = mode === 'markdown' ? markdownPreviewRef : plainPreviewRef;
 
   return (
     <div className="h-screen flex bg-background">
@@ -116,6 +173,7 @@ const Index = () => {
             <h3 className="font-semibold text-sm text-foreground mb-2">Quick Start</h3>
             <ul className="text-xs text-muted-foreground space-y-1">
               <li>• Write in markdown</li>
+              <li>• Paste plain text</li>
               <li>• Preview in real-time</li>
               <li>• Export to PDF/DOCX</li>
             </ul>
@@ -127,6 +185,7 @@ const Index = () => {
               <li>✨ Syntax highlighting</li>
               <li>📊 Beautiful tables</li>
               <li>🎨 Professional styling</li>
+              <li>🤖 Auto-detect formatting</li>
               <li>📱 Mobile responsive</li>
             </ul>
           </div>
@@ -171,19 +230,59 @@ const Index = () => {
               </div>
             </div>
             <div className="hidden md:block">
-              <ExportButtons content={content} previewRef={previewRef} />
+              <ExportButtons 
+                content={mode === 'markdown' ? content : ''} 
+                previewRef={currentPreviewRef}
+                mode={mode}
+                plainTextContent={parsedContent}
+              />
             </div>
           </div>
         </header>
 
+        {/* Mode Switcher */}
+        <div className="border-b border-border bg-card px-4 py-2 flex gap-2">
+          <Button
+            variant={mode === 'markdown' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setMode('markdown')}
+            className="flex items-center gap-2"
+          >
+            <FileText className="h-4 w-4" />
+            Markdown Editor
+          </Button>
+          <Button
+            variant={mode === 'plain' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setMode('plain')}
+            className="flex items-center gap-2"
+          >
+            <Sparkles className="h-4 w-4" />
+            Plain Text Styler
+          </Button>
+        </div>
+
         {/* Desktop: Side by side layout */}
         <div className="hidden lg:flex flex-1 overflow-hidden">
-          <div className="flex-1 border-r border-border overflow-hidden">
-            <Editor value={content} onChange={setContent} />
-          </div>
-          <div ref={previewRef} className="flex-1 overflow-hidden">
-            <Preview content={content} />
-          </div>
+          {mode === 'markdown' ? (
+            <>
+              <div className="flex-1 border-r border-border overflow-hidden">
+                <Editor value={content} onChange={setContent} />
+              </div>
+              <div ref={markdownPreviewRef} className="flex-1 overflow-hidden">
+                <Preview content={content} />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex-1 border-r border-border overflow-hidden">
+                <TextInput value={plainText} onChange={setPlainText} />
+              </div>
+              <div ref={plainPreviewRef} className="flex-1 overflow-hidden">
+                <FormattedPreview parsedContent={parsedContent} />
+              </div>
+            </>
+          )}
         </div>
 
         {/* Mobile/Tablet: Tabbed layout */}
@@ -196,16 +295,26 @@ const Index = () => {
               </TabsList>
             </div>
             <TabsContent value="editor" className="flex-1 overflow-auto m-0 data-[state=active]:flex data-[state=active]:flex-col">
-              <Editor value={content} onChange={setContent} />
+              {mode === 'markdown' ? (
+                <Editor value={content} onChange={setContent} />
+              ) : (
+                <TextInput value={plainText} onChange={setPlainText} />
+              )}
             </TabsContent>
             <TabsContent value="preview" className="flex-1 overflow-auto m-0 data-[state=active]:flex data-[state=active]:flex-col" ref={mobilePreviewRef}>
-              <Preview content={content} />
+              {mode === 'markdown' ? (
+                <Preview content={content} />
+              ) : (
+                <FormattedPreview parsedContent={parsedContent} />
+              )}
             </TabsContent>
           </Tabs>
           <div className="flex-shrink-0 border-t border-border p-3 bg-card">
             <ExportButtons 
-              content={content} 
-              previewRef={typeof window !== 'undefined' && window.innerWidth >= 1024 ? previewRef : mobilePreviewRef} 
+              content={mode === 'markdown' ? content : ''} 
+              previewRef={typeof window !== 'undefined' && window.innerWidth >= 1024 ? currentPreviewRef : mobilePreviewRef}
+              mode={mode}
+              plainTextContent={parsedContent}
             />
           </div>
         </div>

@@ -4,15 +4,23 @@ import html2pdf from "html2pdf.js";
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType } from "docx";
 import { saveAs } from "file-saver";
 import { toast } from "sonner";
+import { ParsedContent } from "@/lib/textParser";
 
 interface ExportButtonsProps {
   content: string;
   previewRef: React.RefObject<HTMLDivElement>;
+  mode?: 'markdown' | 'plain';
+  plainTextContent?: ParsedContent[];
 }
 
-const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
+const ExportButtons = ({ content, previewRef, mode = 'markdown', plainTextContent }: ExportButtonsProps) => {
   const exportToPDF = () => {
-    if (!content) {
+    if (mode === 'markdown' && !content) {
+      toast.error("Please add some content before exporting");
+      return;
+    }
+    
+    if (mode === 'plain' && (!plainTextContent || plainTextContent.length === 0)) {
       toast.error("Please add some content before exporting");
       return;
     }
@@ -22,7 +30,9 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
       return;
     }
 
-    const element = previewRef.current.querySelector(".markdown-preview") as HTMLElement;
+    // Handle different preview modes
+    const selector = mode === 'plain' ? "#preview-content" : ".markdown-preview";
+    const element = previewRef.current.querySelector(selector) as HTMLElement;
     
     if (!element || !element.innerHTML) {
       toast.error("Preview content not found. Please try again.");
@@ -325,6 +335,103 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
     );
   };
 
+  const parsePlainTextToDocx = (parsedContent: ParsedContent[]) => {
+    const children: (Paragraph | Table)[] = [];
+
+    parsedContent.forEach((item) => {
+      switch (item.type) {
+        case 'heading':
+          const headingLevel = 
+            item.level === 1 ? HeadingLevel.HEADING_1 :
+            item.level === 2 ? HeadingLevel.HEADING_2 :
+            item.level === 3 ? HeadingLevel.HEADING_3 :
+            item.level === 4 ? HeadingLevel.HEADING_4 :
+            item.level === 5 ? HeadingLevel.HEADING_5 :
+            HeadingLevel.HEADING_6;
+          
+          children.push(
+            new Paragraph({
+              text: item.content,
+              heading: headingLevel,
+              spacing: { before: 240, after: 120 },
+            })
+          );
+          break;
+
+        case 'code':
+          children.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `[${item.language?.toUpperCase()}]`,
+                  bold: true,
+                }),
+              ],
+              spacing: { before: 120, after: 60 },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: item.content,
+                  font: "Courier New",
+                }),
+              ],
+              spacing: { after: 120 },
+            })
+          );
+          break;
+
+        case 'table':
+          if (item.rows && item.rows.length > 0) {
+            const rows = item.rows.map(
+              (rowData) =>
+                new TableRow({
+                  children: rowData.map(
+                    (cellData) =>
+                      new TableCell({
+                        children: [new Paragraph({ text: cellData })],
+                        width: { size: 100 / rowData.length, type: WidthType.PERCENTAGE },
+                      })
+                  ),
+                })
+            );
+
+            children.push(
+              new Table({
+                rows,
+                width: { size: 100, type: WidthType.PERCENTAGE },
+              })
+            );
+          }
+          break;
+
+        case 'list':
+          if (item.items) {
+            item.items.forEach((listItem) => {
+              children.push(
+                new Paragraph({
+                  text: `• ${listItem}`,
+                  spacing: { after: 60 },
+                })
+              );
+            });
+          }
+          break;
+
+        case 'text':
+          children.push(
+            new Paragraph({
+              text: item.content,
+              spacing: { after: 120 },
+            })
+          );
+          break;
+      }
+    });
+
+    return children;
+  };
+
   const parseMarkdownToDocx = (markdown: string) => {
     const lines = markdown.split("\n");
     const children: (Paragraph | Table)[] = [];
@@ -456,13 +563,20 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
   };
 
   const exportToDOCX = async () => {
-    if (!content) {
+    if (mode === 'markdown' && !content) {
+      toast.error("Please add some content before exporting");
+      return;
+    }
+    
+    if (mode === 'plain' && (!plainTextContent || plainTextContent.length === 0)) {
       toast.error("Please add some content before exporting");
       return;
     }
 
     try {
-      const sections = parseMarkdownToDocx(content);
+      const sections = mode === 'markdown' 
+        ? parseMarkdownToDocx(content)
+        : parsePlainTextToDocx(plainTextContent!);
 
       const doc = new Document({
         sections: [
@@ -482,6 +596,10 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
     }
   };
 
+  const hasContent = mode === 'markdown' 
+    ? !!content 
+    : !!(plainTextContent && plainTextContent.length > 0);
+
   return (
     <div className="flex gap-2 w-full">
       <Button
@@ -489,7 +607,7 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
         variant="default"
         size="sm"
         className="gap-2 flex-1 sm:flex-none"
-        disabled={!content}
+        disabled={!hasContent}
       >
         <Download className="h-4 w-4" />
         <span className="hidden sm:inline">Export PDF</span>
@@ -500,7 +618,7 @@ const ExportButtons = ({ content, previewRef }: ExportButtonsProps) => {
         variant="secondary"
         size="sm"
         className="gap-2 flex-1 sm:flex-none"
-        disabled={!content}
+        disabled={!hasContent}
       >
         <FileText className="h-4 w-4" />
         <span className="hidden sm:inline">Export DOCX</span>
