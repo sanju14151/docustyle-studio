@@ -85,52 +85,43 @@ const ExportButtons = ({ content, previewRef, mode = 'markdown', plainTextConten
       }
       
       /* Heading styles - matching preview exactly */
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        letter-spacing: -0.025em;
+        page-break-after: avoid !important;
+      }
+      
       h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #0f172a;
+        font-size: 1.5rem !important;
         margin-bottom: 1rem;
         margin-top: 1.5rem;
         padding-bottom: 0.5rem;
-        border-bottom: 1px solid #cbd5e1;
-        letter-spacing: -0.025em;
-        page-break-after: avoid !important;
+        border-bottom: 1px solid #cbd5e1 !important;
       }
       
       h2 {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #0f172a;
+        font-size: 1.25rem !important;
         margin-bottom: 0.75rem;
         margin-top: 1.25rem;
-        letter-spacing: -0.025em;
-        page-break-after: avoid !important;
       }
       
       h3 {
-        font-size: 1.125rem;
-        font-weight: 700;
-        color: #0f172a;
+        font-size: 1.125rem !important;
         margin-bottom: 0.75rem;
         margin-top: 1rem;
-        letter-spacing: -0.025em;
-        page-break-after: avoid !important;
       }
       
       h4, h5, h6 {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #0f172a;
+        font-size: 1rem !important;
         margin-bottom: 0.5rem;
         margin-top: 0.75rem;
-        letter-spacing: -0.025em;
-        page-break-after: avoid !important;
       }
       
       /* Paragraph styles */
       p {
-        font-size: 0.875rem;
-        color: #334155;
+        font-size: 0.875rem !important;
+        color: #334155 !important;
         margin-bottom: 0.75rem;
         line-height: 1.6;
       }
@@ -139,44 +130,40 @@ const ExportButtons = ({ content, previewRef, mode = 'markdown', plainTextConten
       ul {
         margin-bottom: 1rem;
         padding-left: 1.5rem;
-        list-style-type: disc;
+        list-style-type: disc !important;
       }
       
       li {
-        font-size: 0.875rem;
-        color: #334155;
+        font-size: 0.875rem !important;
+        color: #334155 !important;
         line-height: 1.6;
         margin-bottom: 0.375rem;
       }
       
-      /* Code block styling */
-      div[class*="rounded"] > div:first-child {
-        background: #f1f5f9;
-        padding: 0.5rem 1rem;
-        border-bottom: 1px solid #cbd5e1;
-      }
-      
-      div[class*="rounded"] > div:first-child span {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #475569;
+      /* Code block styling - fixed for PDF */
+      div > div > span {
+        font-size: 0.75rem !important;
+        font-weight: 600 !important;
+        color: #475569 !important;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        background: #f1f5f9 !important;
       }
       
       pre {
-        margin: 0;
-        padding: 1rem;
+        margin: 0 !important;
+        padding: 1rem !important;
         background: #f8fafc !important;
-        border-radius: 0.375rem;
+        border-radius: 0 !important;
         overflow-x: auto;
       }
       
       code {
-        font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-        font-size: 0.875rem;
-        line-height: 1.6;
-        color: #1e293b;
+        font-family: 'Courier New', 'Consolas', 'Monaco', monospace !important;
+        font-size: 0.875rem !important;
+        line-height: 1.6 !important;
+        color: #1e293b !important;
+        background: transparent !important;
       }
       
       pre code {
@@ -185,84 +172,92 @@ const ExportButtons = ({ content, previewRef, mode = 'markdown', plainTextConten
         display: block;
       }
       
-      /* Code container */
-      .my-4 {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-        border: 1px solid #cbd5e1;
-        border-radius: 0.375rem;
+      /* Code container wrapper */
+      div[class*="my-"] {
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 0.375rem !important;
         overflow: hidden;
-        background: #f8fafc;
+        background: #f8fafc !important;
         page-break-inside: avoid !important;
       }
       
       /* Table styling */
       table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 1rem 0;
-        border: 1px solid #cbd5e1;
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin: 1rem 0 !important;
+        border: 1px solid #cbd5e1 !important;
         border-radius: 0.375rem;
         overflow: hidden;
         page-break-inside: avoid !important;
       }
       
       thead {
-        background: #f1f5f9;
+        background: #f1f5f9 !important;
       }
       
       th {
-        padding: 0.75rem 1rem;
-        text-align: left;
-        font-weight: 700;
-        color: #475569;
-        font-size: 0.75rem;
-        text-transform: uppercase;
+        padding: 0.75rem 1rem !important;
+        text-align: left !important;
+        font-weight: 700 !important;
+        color: #475569 !important;
+        font-size: 0.75rem !important;
+        text-transform: uppercase !important;
         letter-spacing: 0.05em;
-        border-bottom: 1px solid #cbd5e1;
+        border-bottom: 1px solid #cbd5e1 !important;
       }
       
       td {
-        padding: 0.75rem 1rem;
-        color: #334155;
-        font-size: 0.875rem;
-        border-bottom: 1px solid #e2e8f0;
+        padding: 0.75rem 1rem !important;
+        color: #334155 !important;
+        font-size: 0.875rem !important;
+        border-bottom: 1px solid #e2e8f0 !important;
       }
       
       tbody tr:last-child td {
-        border-bottom: none;
+        border-bottom: none !important;
       }
       
       /* Additional utility styles */
       a {
-        color: #0d6efd;
+        color: #0d6efd !important;
         text-decoration: none;
       }
       
       blockquote {
-        border-left: 3px solid #cbd5e1;
+        border-left: 3px solid #cbd5e1 !important;
         padding-left: 16px;
         font-style: italic;
         margin: 16px 0;
-        color: #64748b;
+        color: #64748b !important;
       }
       
       hr {
-        border: none;
-        border-top: 1px solid #cbd5e1;
+        border: none !important;
+        border-top: 1px solid #cbd5e1 !important;
         margin: 24px 0;
       }
       
       strong {
-        font-weight: 700;
-        color: #0f172a;
+        font-weight: 700 !important;
+        color: #0f172a !important;
       }
       
       em {
         font-style: italic;
       }
       
-      /* Remove background gradients for print */
+      /* Override any inline styles */
+      * {
+        background-image: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        -webkit-text-fill-color: inherit !important;
+      }
+      
+      /* Container */
       .max-w-4xl {
         max-width: 56rem;
         margin: 0 auto;
