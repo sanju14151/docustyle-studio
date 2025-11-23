@@ -79,201 +79,193 @@ const ExportButtons = ({ content, previewRef, mode = 'markdown', plainTextConten
       
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-        color: #212529;
+        color: #0f172a;
         line-height: 1.6;
         background: #ffffff;
       }
       
-      /* Code block styling - Perplexity style */
-      .code-block-wrapper {
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
-        overflow: hidden;
-        margin: 18px 0;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        page-break-before: auto !important;
-        page-break-after: auto !important;
+      /* Heading styles - matching preview exactly */
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 1rem;
+        margin-top: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #cbd5e1;
+        letter-spacing: -0.025em;
+        page-break-after: avoid !important;
       }
       
-      .code-block-header {
-        background: #ffffff;
-        padding: 8px 14px;
-        font-size: 11px;
+      h2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.75rem;
+        margin-top: 1.25rem;
+        letter-spacing: -0.025em;
+        page-break-after: avoid !important;
+      }
+      
+      h3 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.75rem;
+        margin-top: 1rem;
+        letter-spacing: -0.025em;
+        page-break-after: avoid !important;
+      }
+      
+      h4, h5, h6 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+        margin-top: 0.75rem;
+        letter-spacing: -0.025em;
+        page-break-after: avoid !important;
+      }
+      
+      /* Paragraph styles */
+      p {
+        font-size: 0.875rem;
+        color: #334155;
+        margin-bottom: 0.75rem;
+        line-height: 1.6;
+      }
+      
+      /* List styles */
+      ul {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+        list-style-type: disc;
+      }
+      
+      li {
+        font-size: 0.875rem;
+        color: #334155;
+        line-height: 1.6;
+        margin-bottom: 0.375rem;
+      }
+      
+      /* Code block styling */
+      div[class*="rounded"] > div:first-child {
+        background: #f1f5f9;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #cbd5e1;
+      }
+      
+      div[class*="rounded"] > div:first-child span {
+        font-size: 0.75rem;
         font-weight: 600;
-        color: #495057;
+        color: #475569;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border-bottom: 1px solid #e9ecef;
-        font-family: 'Courier New', monospace;
-      }
-      
-      .code-block-content {
-        padding: 14px 16px;
-        overflow-x: auto;
-        background: #f8f9fa;
+        letter-spacing: 0.05em;
       }
       
       pre {
         margin: 0;
-        background: transparent !important;
-        border: none !important;
+        padding: 1rem;
+        background: #f8fafc !important;
+        border-radius: 0.375rem;
+        overflow-x: auto;
       }
       
       code {
-        font-family: 'Courier New', 'Consolas', monospace;
-        font-size: 13px;
+        font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+        font-size: 0.875rem;
         line-height: 1.6;
-        color: #212529;
+        color: #1e293b;
       }
       
       pre code {
         background: transparent !important;
         padding: 0 !important;
+        display: block;
       }
       
-      :not(pre) > code {
-        background: #e9ecef;
-        color: #d63384;
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: 500;
+      /* Code container */
+      .my-4 {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.375rem;
+        overflow: hidden;
+        background: #f8fafc;
+        page-break-inside: avoid !important;
       }
       
       /* Table styling */
       table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 6px;
+        margin: 1rem 0;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.375rem;
         overflow: hidden;
         page-break-inside: avoid !important;
-        break-inside: avoid !important;
       }
       
       thead {
-        background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%);
+        background: #f1f5f9;
       }
       
       th {
-        border: 1px solid #e2e8f0;
-        padding: 10px 14px;
+        padding: 0.75rem 1rem;
         text-align: left;
         font-weight: 700;
-        color: #2d3748;
-        font-size: 11px;
+        color: #475569;
+        font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        border-bottom: 1px solid #cbd5e1;
       }
       
       td {
-        border: 1px solid #e2e8f0;
-        padding: 10px 14px;
-        color: #4a5568;
-        font-size: 13px;
+        padding: 0.75rem 1rem;
+        color: #334155;
+        font-size: 0.875rem;
+        border-bottom: 1px solid #e2e8f0;
       }
       
-      tbody tr:nth-child(even) {
-        background: #f7fafc;
+      tbody tr:last-child td {
+        border-bottom: none;
       }
       
-      /* Heading styling - Perplexity style */
-      h1 {
-        font-size: 26px;
-        font-weight: 700;
-        color: #212529;
-        margin-bottom: 14px;
-        margin-top: 0;
-        padding-top: 8px;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-        page-break-inside: avoid !important;
-      }
-      
-      h2 {
-        font-size: 20px;
-        font-weight: 700;
-        color: #212529;
-        margin-bottom: 12px;
-        margin-top: 24px;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-        page-break-inside: avoid !important;
-      }
-      
-      h3 {
-        font-size: 18px;
-        font-weight: 600;
-        color: #212529;
-        margin-bottom: 10px;
-        margin-top: 20px;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-        page-break-inside: avoid !important;
-      }
-      
-      h4, h5, h6 {
-        font-weight: 600;
-        color: #495057;
-        margin-bottom: 10px;
-        margin-top: 16px;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-        page-break-inside: avoid !important;
-      }
-      
-      p {
-        margin-bottom: 14px;
-        color: #495057;
-        line-height: 1.6;
-        font-size: 14px;
-      }
-      
-      ul, ol {
-        margin-bottom: 14px;
-        margin-left: 24px;
-        color: #495057;
-      }
-      
-      li {
-        margin-bottom: 6px;
-        line-height: 1.6;
-        font-size: 14px;
-      }
-      
+      /* Additional utility styles */
       a {
         color: #0d6efd;
         text-decoration: none;
       }
       
-      a:hover {
-        text-decoration: underline;
-      }
-      
       blockquote {
-        border-left: 3px solid #dee2e6;
+        border-left: 3px solid #cbd5e1;
         padding-left: 16px;
         font-style: italic;
         margin: 16px 0;
-        color: #6c757d;
+        color: #64748b;
       }
       
       hr {
         border: none;
-        border-top: 1px solid #dee2e6;
+        border-top: 1px solid #cbd5e1;
         margin: 24px 0;
       }
       
       strong {
         font-weight: 700;
-        color: #212529;
+        color: #0f172a;
       }
       
       em {
         font-style: italic;
+      }
+      
+      /* Remove background gradients for print */
+      .max-w-4xl {
+        max-width: 56rem;
+        margin: 0 auto;
       }
     `;
     tempContainer.appendChild(style);
